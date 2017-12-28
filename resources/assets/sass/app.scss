@@ -169,3 +169,21 @@ input {
 .panel {
   margin-top: 50px;
 }
+
+#logout {
+  cursor: default;
+  &:hover {
+    background-color: transparent;
+  }
+}
+
+/*messages*/
+.shared-msg
+{
+    animation:shared-msg 2s;
+    animation-fill-mode: forwards;
+}
+@keyframes shared-msg{
+    from{opacity: 1;}
+    to{opacity: 0;}
+}
