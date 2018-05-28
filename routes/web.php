@@ -11,12 +11,23 @@
 |
 */
 Route::get('/','StaticPagesController@home')->name('home');
-Route::get('/help','StaticPagesController@help')->name('help');
-Route::get('/about','StaticPagesController@about')->name('abou1t');
+Route::get('/help','StaticPagesController@help')->name('help')->middleware('age');
+Route::get('/about','StaticPagesController@about')->name('about');
 
 //注册
 Route::get('/signup','UsersController@create')->name('signup');
 
+//发送确认邮件
+Route::get('/signup/confirm/{token}','UsersController@confirmEmail')->name('confirm_email');
+
+//测试
+Route::get('/test','TestController@test')->name('test');
+
+//上传
+Route::post('/upload','TestController@upload')->name('test.upload');
+
+//测试加密解密
+Route::get('/crypt','TestController@crypt')->name('test.crypt');
 
 //Route::get('/login','LoginController@login')->name('login');
 
