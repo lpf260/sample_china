@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Models\User;
 use Mail;
+use Auth;
 
 class UsersController extends Controller
 {
@@ -124,18 +125,18 @@ class UsersController extends Controller
     {
         $view = 'emails.confirm';
         $data = compact('user');
-        $from = '1224312326@qq.com';
-        $name = 'lpf';
-        $to = $user->email;
-        $subject = "感谢注册 Sample 应用！请确认你的邮箱。";
 
-        Mail::send($view, $data, function ($message) use ($from, $name, $to, $subject) {
-            $message->from($from, $name)->to($to)->subject($subject);
+        $to = $user->email;
+        $subject = "感谢您注册 Sample 应用！请确认你的邮箱。";
+
+        Mail::send($view, $data, function ($message) use ($to, $subject) {
+            $message->to($to)->subject($subject);
         });
     }
 
     public function confirmEmail($token)
     {
+        //token用一次就会置空，在这里就是通过token查询
         $user = User::where('activation_token',$token)->firstOrFail();
 
         $user->activated = true;
@@ -143,7 +144,10 @@ class UsersController extends Controller
         $user->save();
 
         Auth::login($user);
+
+
         session()->flash('success', '恭喜你，激活成功！');
+
         return redirect()->route('users.show', [$user]);
     }
 }
